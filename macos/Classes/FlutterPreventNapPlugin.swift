@@ -2,7 +2,7 @@ import Cocoa
 import FlutterMacOS
 
 public class FlutterPreventNapPlugin: NSObject, FlutterPlugin {
-  var activities: [String: Any] = [:]
+  var activities: [String: NSObjectProtocol] = [:]
 
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "flutter_prevent_nap", binaryMessenger: registrar.messenger)
@@ -11,24 +11,20 @@ public class FlutterPreventNapPlugin: NSObject, FlutterPlugin {
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    guard let args = call.arguments as? Dictionary<String, Any> else {
-      result(FlutterError(code: "InvalidArguments", message: "Invalid arguments, expected dictionary.", details: nil))
-      return
-    }
     switch call.method {
-    case "getPlatformVersion":
-      result("macOS " + ProcessInfo.processInfo.operatingSystemVersionString)
     case "beginActivity":
-      let reason = args["reason"] ?? "Prevent nap to do an important task."
       let key = UUID().uuidString
-      let activity = ProcessInfo.beginActivity()
+      let reason = call.arguments as? String ?? "Prevent nap to do an important task."
+      let activity = ProcessInfo.processInfo.beginActivity(options: [.idleDisplaySleepDisabled, .userInitiated], reason: reason)
       activities[key] = activity
       result(key)
     case "endActivity":
-      if let activity = activities[key] as? AnyHashable {
-        ProcessInfo.endActivity(activity)
+      let key = call.arguments as? String ?? ""
+      if let activity = activities[key] {
+        ProcessInfo.processInfo.endActivity(activity)
         activities[key] = nil 
         result(true)
+        return
       }
       result(FlutterError(code: "Unknown Activity", message: nil, details: nil))
     default:
