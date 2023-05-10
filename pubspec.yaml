@@ -1,7 +1,8 @@
 name: flutter_prevent_nap
 description: A new Flutter plugin project.
 version: 0.0.1
-homepage:
+homepage: https://github.com/farmer00317558/flutter_prevent_nap
+repository: https://github.com/farmer00317558/flutter_prevent_nap
 
 environment:
   sdk: '>=2.19.6 <3.0.0'
