@@ -5,9 +5,9 @@
 Pod::Spec.new do |s|
   s.name             = 'flutter_prevent_nap'
   s.version          = '0.0.1'
-  s.summary          = 'A new Flutter plugin project.'
+  s.summary          = 'A Flutter plugin to prevent app into app nap state.'
   s.description      = <<-DESC
-A new Flutter plugin project.
+A Flutter plugin to prevent app into app nap state.
                        DESC
   s.homepage         = 'http://example.com'
   s.license          = { :file => '../LICENSE' }
